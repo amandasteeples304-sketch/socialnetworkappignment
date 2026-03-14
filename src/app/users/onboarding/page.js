@@ -1,15 +1,15 @@
 import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation ";
+import { redirect } from "next/navigation";
 import { db } from "@/utils/connect";
 
 export default function OnboardingPage() {
   async function handleSubmitNewUser(formData) {
     "use server";
-    const { username, bio } = Object.fromEntries(formData);
+    const { full_name, username, bio, image } = Object.fromEntries(formData);
     const { userId } = await auth();
-    const inserted = await db.query(
-      `insert into user_account (username, bio, clerk_id) values ($1,$2, $3)`,
-      [username, bio, userId],
+    await db.query(
+      `INSERT INTO users (full_name, username, bio, image, clerk_id) values ($1, $2, $3, $4, $5)`,
+      [full_name, username, bio, image, userId],
     );
     redirect(`/users/${userId}`);
   }
@@ -17,9 +17,11 @@ export default function OnboardingPage() {
     <div>
       <h2> Sign up to our website: please make a profile</h2>
       <form action={handleSubmitNewUser}>
-        <input name="username" placeholder="username" />
-        <inpt name="bio" placeholder="bio" />
-        <button type="submit">Submit</button>
+        <input name="full_name" placeholder="Full Name" required />
+        <input name="username" placeholder="Username" required />
+        <input name="bio" placeholder="Bio" />
+        <input name="image" placeholder="Profile Picture" required />
+        <button type="submit">Save Profile</button>
       </form>
     </div>
   );

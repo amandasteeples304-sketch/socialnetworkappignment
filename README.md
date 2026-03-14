@@ -1,36 +1,8 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The battles were long and gruesome. Some might even say a fight to the death. I, however, would compare it to an intense Pokemon battle, like fighting a level 3 water Pokemon when you have a level 6 fire type. It doesn't matter that you're stronger than it, it is super effective against you, and it is going to be a nail biting battle; and then at the very last standoff, when you're both 3XP away from fainting. You throw the Pokeball... AND YOU'VE CAUGHT IT!
+Apparently, previous files sat in my main computer folder was confusing the code. It hasn't confused the code for the past 8 weeks but there we are.
+Next.js16 VS Clerk was annoying. I like to use the most updated things, however, the new enging (Turbopack) is apparently too new and couldn't see the internal parts of the Clerk package.
+The "Network Ghost" haunts again! I had this issue last week, where the Wi-Fi network can't "see" Supabase's modern IPv6 address, and I refuse to pay to use the IPv4. Instead, the connection string was swapped, acting like a bridge to the router can understand it. No doubt this will give me issues with Vercel, but I'll cross that bridge when I get to it.
+The "oops my bad" errors:
+I accidentally caused an "infinite loop" which was fun to be the cause of! I ended up changing a file name from proxy.js to middleware.js; and created a public route inside of it, as well as removing a getUser().
+I had an error with the env file. I copied and pasted what I thought was my clerk key, thinking it had converted the password into dots because it was clever. The env file doesn't like dots, it likes passwords, this wasn't an awful resolution, just meant digging.
+I had to change my signin>[id] route to sign-in>[[...sign-in]] because it was confusing Clerk, who was trying to go to another sub-page which wasn't there. This confused Next.js and gave me 404 errors.
