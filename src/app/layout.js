@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${unna.className} antialiased`}>
         <ClerkProvider>
-          <header className="flex justify-end items-center p-4 gap-4 h-16">
+          <header className="h-16 flex justify-end items-center px-4 max-w-3xl mx-auto">
             <NavBar />
           </header>
           {children}

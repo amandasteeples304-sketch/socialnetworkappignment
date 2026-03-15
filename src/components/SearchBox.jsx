@@ -16,8 +16,17 @@ export default function SearchBox() {
 
   return (
     <form onSubmit={handleSearch}>
-      <input name="query" placeholder="Search animals or users" />
-      <button type="submit">Search</button>
+      <input
+        name="query"
+        placeholder="Search animals or users"
+        className="flex-1 border p-2 rounded-lg outline-none focus:ring-2 focus:ring-black"
+      />
+      <button
+        type="submit"
+        className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition"
+      >
+        Search
+      </button>
     </form>
   );
 }

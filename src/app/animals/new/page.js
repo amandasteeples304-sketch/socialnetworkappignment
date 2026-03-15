@@ -1,6 +1,7 @@
 import { db } from "@/utils/connect";
 import { getUser } from "@/utils/getUser";
 import { redirect } from "next/navigation";
+import SubmitButton from "@/components/SubmitButton";
 
 export default async function NewAnimalPage() {
   const user = await getUser();
@@ -19,12 +20,29 @@ export default async function NewAnimalPage() {
   return (
     <div>
       <h1>Add a new animal!</h1>
-      <form action={handleAddAnimal}>
-        <input name="animal_name" placeholder="Animal name if applicable" />
-        <input name="species" placeholder="Animal species" required />
-        <textarea name="caption" placeholder="A penny for your thoughts" />
-        <input name="image_url" placeholder="Animal image URL" required />
-        <button type="submit">Add Animal</button>
+      <form action={handleAddAnimal} className="flex flex-col gap-4 max-w-md">
+        <input
+          name="animal_name"
+          placeholder="Animal name if applicable"
+          className="border p-2 rounded"
+        />
+        <input
+          name="species"
+          placeholder="Animal species (required)"
+          required
+          className="border p-2 rounded"
+        />
+        <textarea
+          name="caption"
+          placeholder="A penny for your thoughts"
+          className="border p-2 rounded h-24"
+        />
+        <input
+          name="image_url"
+          placeholder="Animal image URL"
+          className="border p-2 rounded"
+        />
+        <SubmitButton pendingText="Adding Animal">Add Animal</SubmitButton>
       </form>
     </div>
   );

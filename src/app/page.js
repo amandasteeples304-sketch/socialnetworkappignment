@@ -1,10 +1,23 @@
 import { db } from "@/utils/connect";
 import Link from "next/link";
 import SearchBox from "@/components/SearchBox";
-import LikeButton from "@/components/LikeButton";
+import AnimalCard from "@/components/AnimalCard";
 import UserAvatar from "@/components/UserAvatar";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export default async function Home({ searchParams }) {
+  const { userId } = await auth();
+  if (userId) {
+    const userCheck = await db.query(
+      `SELECT clerk_id FROM users WHERE clerk_id = $1`,
+      [userId],
+    );
+    if (userCheck.rowCount === 0) {
+      redirect("/users/onboarding");
+    }
+  }
+
   const { search } = await searchParams;
   let queryBase = `SELECT animals.*, users.username, users.image, 
   COUNT(animal_likes.id) AS like_count
@@ -28,11 +41,11 @@ export default async function Home({ searchParams }) {
   const animals = (await db.query(finalQuery, animalValues)).rows;
 
   let userResults = [];
-
   if (search) {
     const userQuery = `SELECT clerk_id, username, image, bio FROM users WHERE username ILIKE $1 OR bio ILIKE $1`;
     userResults = (await db.query(userQuery, [`%${search}%`])).rows;
   }
+
   return (
     <div className="max-w-2xl mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6"> Welcome to Animal Travels</h1>
@@ -44,50 +57,7 @@ export default async function Home({ searchParams }) {
         ) : (
           <div className="grid gap-8">
             {animals.map((animal) => (
-              <div
-                key={animal.id}
-                className="border rounded-xl bg-white shadow-sm overflow-hidden"
-              >
-                <div className="p-4 flex items-center gap-3">
-                  <UserAvatar
-                    src={animal.image}
-                    fallbackText={animal.username}
-                  />
-                  <Link
-                    href={`/users/${animal.clerk_id}`}
-                    className="font-bold"
-                  >
-                    @{animal.username}
-                  </Link>
-                </div>
-                {animal.image_url && (
-                  <Link href={`/animals/${animal.id}`}>
-                    <img
-                      src={animal.image_url}
-                      alt={animal.animal_name}
-                      className="w-full h-auto"
-                    />
-                  </Link>
-                )}
-                <div className="p-4">
-                  <div className="flex items-center gap-2">
-                    <LikeButton postId={animal.id} />
-                    <span className="text-sm font-semibold">
-                      {animal.like_count}
-                    </span>
-                  </div>
-                  <p className="mt-2">
-                    <span className="font-bold mr-2">{animal.animal_name}</span>
-                    {animal.caption}
-                  </p>
-                  <Link
-                    href={`/animals/${animal.id}`}
-                    className="text-sm opacity-50 block mt-2"
-                  >
-                    View full post and comments
-                  </Link>
-                </div>
-              </div>
+              <AnimalCard key={animal.id} animal={animal} />
             ))}
           </div>
         )}

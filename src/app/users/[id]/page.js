@@ -1,17 +1,23 @@
 import { db } from "@/utils/connect";
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { revalidatePath } from "next/cache";
+import { auth } from "@clerk/nextjs/server";
+import EditProfile from "@/components/EditProfile";
 import UserAvatar from "@/components/UserAvatar";
-import LikeButton from "@/components/LikeButton";
+import AnimalCard from "@/components/AnimalCard";
 
-export default async function PublicProfilePage({ params }) {
-  const { id } = await params;
+export default async function UserProfilePage(props) {
+  const params = await props.params;
+  const id = params.id;
+  const { userId } = await auth();
+  if (!id) {
+    notFound();
+  }
+
   const userResult = await db.query(`SELECT * FROM users WHERE clerk_id = $1`, [
     id,
   ]);
-
   const profile = userResult.rows[0];
-
   if (!profile) {
     notFound();
   }
@@ -30,6 +36,17 @@ export default async function PublicProfilePage({ params }) {
     )
   ).rows;
 
+  async function handleUpdateProfile(formData) {
+    "use server";
+    const { full_name, username, image, bio } = Object.fromEntries(formData);
+
+    await db.query(
+      `UPDATE users SET full_name = $1, username = $2, image = $3, bio = $4 WHERE clerk_id = $5`,
+      [full_name, username, image, bio, id],
+    );
+
+    revalidatePath(`/users/${id}`);
+  }
   return (
     <div className="max-w-3xl mx-auto p-6">
       <div className="flex items-center gap-6 mb-10">
@@ -39,48 +56,27 @@ export default async function PublicProfilePage({ params }) {
           size="lg"
         />
         <div>
-          <h1 className="text-3xl font-bold">@{profile.username}'s Profile</h1>
-          <p className="mt-2 text-gray-600">
-            Bio: {profile.bio || "A mysterious person"}
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl font-bold">@{profile.username}</h1>
+            {userId === id && (
+              <EditProfile
+                profile={profile}
+                handleUpdateProfile={handleUpdateProfile}
+              />
+            )}
+          </div>
+          <p className="mt-2 text-gray-600 italic">
+            {profile.bio || "A mysterious person"}
           </p>
         </div>
       </div>
-      <h2 className="text-xl font-bold mb-6 border-b pb-2">Animals posted</h2>
+      <h2 className="text-xl font-bold mb-6 border-b pb-2">Animals posted:</h2>
       {animals.length === 0 ? (
-        <p className="opacity-50">This user hasn't posted any animals yet.</p>
+        <p className="opacity-60 text-center py-10">No animals posted yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {animals.map((animal) => (
-            <div
-              key={animal.id}
-              className="border rounded-xl overflow-hidden bg-white shadow-sm"
-            >
-              {animal.image_url && (
-                <Link href={`/animals/${animal.id}`}>
-                  <img
-                    src={animal.image_url}
-                    alt={animal.animal_name}
-                    className="w-full h-48 object-cover hover:opacity-90 transition"
-                  />
-                </Link>
-              )}
-              <div className="p-4">
-                <Link
-                  href={`/animals/${animal.id}`}
-                  className="font-bold text-lg hover:underline"
-                >
-                  {animal.animal_name}
-                </Link>
-                <div className="flex items-center gap-2 mt-1">
-                  <LikeButton />
-                  <span className="text-sm font-semibold">
-                    {animal.like_count}
-                  </span>
-                </div>
-                <p className="text-sm opacity-60">{animal.species}</p>
-                <p className="mt-2 text-sm italic">"{animal.caption}"</p>
-              </div>
-            </div>
+            <AnimalCard key={animal.id} animal={animal} />
           ))}
         </div>
       )}

@@ -1,7 +1,11 @@
 import { db } from "@/utils/connect";
 import { getUser } from "@/utils/getUser";
 import { notFound, redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import Link from "next/link";
+import LikeButton from "@/components/LikeButton";
+import UserAvatar from "@/components/UserAvatar";
+import CommentSection from "@/components/CommentSection";
 
 export default async function animalCommentPage({ params }) {
   const { id } = await params;
@@ -60,6 +64,7 @@ export default async function animalCommentPage({ params }) {
       [clerkId, id, content],
     );
 
+    revalidatePath(`/animals/${id}`);
     redirect(`/animals/${id}`);
   }
 
@@ -73,7 +78,7 @@ export default async function animalCommentPage({ params }) {
             className="w-48 aspect-[2/3] object-cover rounded shrink-0"
           />
         )}
-        <div>
+        <div className="flex-1">
           <h1 className="text-3xl font-bold">
             {animal.animal_name || "Name unknown"}
           </h1>
@@ -97,37 +102,11 @@ export default async function animalCommentPage({ params }) {
           </div>
         </div>
       </div>
-      <h2 className="text-xl mb-3">Leave a comment</h2>
-      <form className="mb-10" action={handleSubmitAnimalComment}>
-        <textarea
-          name="content"
-          placeholder="Write a comment..."
-          required
-          className="w-full border rounded p-3 resize-none h-24"
-        />
-        <button
-          type="submit"
-          className="mt-2 px-4 py-2 bg-black text-white rounded"
-        >
-          Submit
-        </button>
-      </form>
-      <h2 className="text-xl mb-3">Comments</h2>
-      {comments.length === 0 ? (
-        <p className="opacity-50">No comments yet.</p>
-      ) : (
-        <ul className="space-y-4">
-          {comments.map((comment) => (
-            <li key={comment.id} className="flex gap-4 border-b pb-4">
-              <UserAvatar src={comment.image} fallbackText={comment.username} />
-              <div className="flex-1">
-                <p className="font-medium">@{comment.username}</p>
-                <p className="opacity-70 mt-1">{comment.comment_text}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+      <CommentSection
+        animal={animal}
+        comments={comments}
+        handleAction={handleSubmitAnimalComment}
+      />
     </div>
   );
 }

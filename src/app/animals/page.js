@@ -23,18 +23,18 @@ export default async function AnimalsPage() {
         {animals.map((animal) => (
           <li key={animal.id}>
             <Link href={`/animals/${animal.id}`} className="group">
-              {animal.imgage_url ? (
+              {animal.image_url ? (
                 <img
                   src={animal.image_url}
                   alt={animal.species}
                   className="w-full aspect-[2/3] object-cover rounded group-hover:opacity-80 transition-opacity"
                 />
               ) : (
-                <div className="2-full aspect-[2/3] bg-gray-200 rounded flex items-center justify-center text-gray-500 group-hover:opacity-80 transition-opacity">
+                <div className="w-full aspect-[2/3] bg-gray-200 rounded flex items-center justify-center text-gray-500 group-hover:opacity-80 transition-opacity">
                   No image
                 </div>
               )}
-              <h2 className="m2 text-sm font-medium">
+              <h2 className="mt-2 text-sm font-medium">
                 {animal.animal_name || "Wild animal"}
               </h2>
               <p className="text-sm opacity-60">{animal.species}</p>
