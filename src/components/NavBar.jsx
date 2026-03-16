@@ -18,6 +18,9 @@ export default function NavBar() {
             <Link href="/" className="font-bold">
               Home is where the animals are
             </Link>
+            <Link href={`/new-post`} className="hover:underline">
+              New Post
+            </Link>
             <Link href={`/users/${userId}`} className="hover:underline">
               My Profile
             </Link>
