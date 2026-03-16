@@ -1,3 +1,22 @@
+I created this social media app, based off of the blog I created in assignment9. I thought if I could use the tables from my previous SQL then that would save time. Then I realised this might tweak the blog I created and it soon sounded difficult and complex. SO, I took the information I had already gathered, and I just re-made the tables with it. Still took less time then thinking up an entirely new concept for my social media page, and then saved time not having to create entirely new tables for that.
+
+User stories: They wanted to sign-up and log-in securely using Clerk, in order for them to inreract with the app as a site-user and edit their profile.
+This they can do! They can sign-up, they can log-in, they can choose if they want to use a profile image, if not they can just have their initials showing in place of the profile picture. Although mine says AM, not AS. Their's also a nice little Radix-ui pencil button so they can edit their profile. Lovely.
+They wanted to see an error/not found page using error.js/not-found.js.
+Well, there's a nice "no animals found/no users found" response if they search for something/someone who doesn't exist in the database so I think that's it..? I was so sure that that was it but now I'm doubting it... Might circle back to that one...
+They wanted an enhanced user experience with modern UI components, like Radix UI Primitive.
+There's a lovely pencil when they want to edit their profile, a heart to click that becomes red when it has been clicked (that also interacts with the SQL to say this image has been liked by this person X amount of times); AND they have a sweet circular profile picture OR initial option. So I just realised that I used Radix Icons which are different from Radix Primitives. So maybe not. I'll circle back to that one.
+They wanted to create and manage their own profile, including adding information like a biography, in order to personalise their account.
+I made the biography and profile image optional, because not everyone has the time to write/choose their image when they first make a profile. This can be updated through the settings, which is only visible to the users on their own profile. No editing other people! This is then stored in the table for the users in the database. Although now I see it says in their own table... Did I really miss every requirement??
+As a user they wanted to create their posts and for them to be displayed on their profile page. This was done. But they can't delete it. Technically deleting wasn't a requirement... No running away from your past on my social media app!
+
+Stretch goals:
+You can visit other users profiles, if you click on their name on the main page, or on the direct animal posts page. You can also search for them (or the animal); which is great if you know who or what you're searching for.
+You can also like and comment on other users profiles, and that gets stored on the SQL. You can unlike but why would you want to? You can't uncomment though. Like I said, no running away from your past on this app!
+I'm unsure if there's an error/not found page if you try to visit a users profile who doesn't exist. I know if you search for someone/animals and it's not in the database it says no users or no animals but I'm not sure if that counts...
+
+I made a detailed plan of what I want the social media app to have and I still forgot to make an "Add Post" page. I've rectified that now but what are social media apps without the ability to post. This just shows that I can follow a plan, and I can still get derailed with my brain going "oooooh shiny thing!!!", or in this case "oooohhh likes!!!" or "ooohh edit profile!" Still debating a friends page...
+
 The battles were long and gruesome. Some might even say a fight to the death. I, however, would compare it to an intense Pokemon battle, like fighting a level 3 water Pokemon when you have a level 6 fire type. It doesn't matter that you're stronger than it, it is super effective against you, and it is going to be a nail biting battle; and then at the very last standoff, when you're both 3XP away from fainting. You throw the Pokeball... AND YOU'VE CAUGHT IT!
 Apparently, previous files sat in my main computer folder was confusing the code. It hasn't confused the code for the past 8 weeks but there we are.
 Next.js16 VS Clerk was annoying. I like to use the most updated things, however, the new enging (Turbopack) is apparently too new and couldn't see the internal parts of the Clerk package.
@@ -6,3 +25,4 @@ The "oops my bad" errors:
 I accidentally caused an "infinite loop" which was fun to be the cause of! I ended up changing a file name from proxy.js to middleware.js; and created a public route inside of it, as well as removing a getUser().
 I had an error with the env file. I copied and pasted what I thought was my clerk key, thinking it had converted the password into dots because it was clever. The env file doesn't like dots, it likes passwords, this wasn't an awful resolution, just meant digging.
 I had to change my signin>[id] route to sign-in>[[...sign-in]] because it was confusing Clerk, who was trying to go to another sub-page which wasn't there. This confused Next.js and gave me 404 errors.
+98% of my errors were resolved with the aide of GoogleAi in the chrome search bar. I am getting better at debugging with nextjs, but especially in large projects where I have many pages, I get lost and confused. This will improve over time, naturally. I also got code blind, which did not help when I was lost.
