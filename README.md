@@ -1,3 +1,4 @@
+https://socialnetworkappignment.vercel.app/
 I created this social media app, based off of the blog I created in assignment9. I thought if I could use the tables from my previous SQL then that would save time. Then I realised this might tweak the blog I created and it soon sounded difficult and complex. SO, I took the information I had already gathered, and I just re-made the tables with it. Still took less time then thinking up an entirely new concept for my social media page, and then saved time not having to create entirely new tables for that.
 
 User stories: They wanted to sign-up and log-in securely using Clerk, in order for them to inreract with the app as a site-user and edit their profile.
